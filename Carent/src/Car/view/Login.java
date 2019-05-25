@@ -8,13 +8,17 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
-
+import Car.model.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 public class Login {
 
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private boolean status=true;
+	private Sqlite sql;
+	  
 
 	/**
 	 * Launch the application.
@@ -32,12 +36,22 @@ public class Login {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		String user;
+		String pass;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnNewButton = new JButton("Login");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				user=textField.getText();
+				pass=String valueof(passwordField.getPassword());
+				
+			}
+		});
 		btnNewButton.setBounds(15, 199, 115, 29);
 		frame.getContentPane().add(btnNewButton);
 		
@@ -61,6 +75,8 @@ public class Login {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(191, 80, 146, 26);
 		frame.getContentPane().add(passwordField);
+		sql.connect();
+		
 		
 		}
 	public void control( boolean status) {
