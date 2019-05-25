@@ -11,6 +11,7 @@ import javax.swing.JPasswordField;
 import Car.model.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 public class Login {
 
 	private JFrame frame;
@@ -36,8 +37,7 @@ public class Login {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		String user;
-		String pass;
+		Connection conn=sql.connect();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,8 +47,10 @@ public class Login {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				user=textField.getText();
-				pass=String valueof(passwordField.getPassword());
+				String user= new String(textField.getText());
+				String passText = new String(passwordField.getPassword());
+				
+				sql.userexists(conn, user, passText);
 				
 			}
 		});
@@ -75,7 +77,7 @@ public class Login {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(191, 80, 146, 26);
 		frame.getContentPane().add(passwordField);
-		sql.connect();
+		
 		
 		
 		}
