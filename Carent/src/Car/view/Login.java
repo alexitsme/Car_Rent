@@ -1,4 +1,5 @@
 package Car.view;
+import Car.model.*;
 
 import java.awt.EventQueue;
 
@@ -6,19 +7,32 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import Car.model.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
-public class Login {
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+public class Login  {
+
+	public int getAcces() {
+		return acces;
+	}
+
+	public void setAcces(int acces) {
+		this.acces = acces;
+	}
+
 
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private boolean status=true;
-	private Sqlite sql;
+	private int acces;
+	
 	  
 
 	/**
@@ -37,7 +51,10 @@ public class Login {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		Connection conn=sql.connect();
+		Sqlite sqlite=new Sqlite();
+		Connection conn=sqlite.connect();
+		System.out.println(conn);
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,8 +66,12 @@ public class Login {
 			public void mouseClicked(MouseEvent arg0) {
 				String user= new String(textField.getText());
 				String passText = new String(passwordField.getPassword());
+				int acces =sqlite.userexists(conn, user, passText);  
+				setAcces(acces);
 				
-				sql.userexists(conn, user, passText);
+				
+				
+				
 				
 			}
 		});
@@ -84,4 +105,8 @@ public class Login {
 	public void control( boolean status) {
 		frame.setVisible(status);
 	}
+	
+
+
+	
 }
